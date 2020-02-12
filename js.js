@@ -64,55 +64,28 @@ const targetObj = {
     z: [1,2,3,4,5]
 }
 
-/*function deepCopy_1(obj){//shallow, apparently
-    for(let key in obj){
-        if (typeof(obj[key])==="object") return deepCopy_1(obj[key])
-        return {...obj}
+
+
+function deepCopy(obj) {
+  let copy={};
+  for (let key in obj) {
+    if (typeof obj[key] === 'object') {
+        if(Array.isArray(obj[key])){
+            copy[key]=[...obj[key]]
+        }
+        else{
+            copy[key] = deepCopy(obj[key])
+        }
+    } else {
+        copy[key] = obj[key]
     }
-} */
+  }
+  return copy;
+}
 
-// function deepCopy_2(obj){
-//     let temp={};
+const copiedObj = deepCopy(targetObj)
+console.log(targetObj,copiedObj)
 
-//     function deeperCopy(obj){
-//         for(let key of Object.keys(obj)){
-//             if(typeof(obj[key])==="object") {
-//                 if(Array.isArray(obj[key])) Object.assign(temp,obj[key]);  
-//                 else Object.assign(temp,{[key]:deeperCopy(obj[key])})
-//                 } 
-//             Object.assign(temp,obj[key])
-//             }
-//         return;
-//     }
-    
-//     deeperCopy(obj)
-//     return temp;
-// }
-
-// function deepCopy_3(obj){
-//     let temp={};
-
-//     function deeperCopy(obj,temp){
-        
-//         for(let key in obj){
-//             if(typeof(obj[key])==="object"){
-//                 deeperCopy(obj[key],obj)
-//             }
-//             else Object.assign(temp,obj)
-//         }
-//         return;
-//     }
-    
-//     deeperCopy(obj,temp)
-//     return temp;
-// }
-
-
-
-
-// const copiedObj = deepCopy_3(targetObj)
-// console.log(copiedObj)
-
-// targetObj.y.q.c.d.splice(0,1,100);
-// const areElementsEqual = targetObj.y.q.c.d[0] === copiedObj.y.q.c.d[0]
-// console.log(areElementsEqual)
+targetObj.y.q.c.d.splice(0,1,100);
+const areElementsEqual = targetObj.y.q.c.d[0] === copiedObj.y.q.c.d[0]
+console.log(areElementsEqual)
